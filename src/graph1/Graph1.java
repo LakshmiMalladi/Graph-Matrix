@@ -26,11 +26,12 @@ public class Graph1 {
         arr = new int[numOfVer + 1][numOfVer + 1];
     }
  
+    //ADD AN EDGE BETWEEN  TWO VERTICES
     public void addEdge(int to, int from, int edge) 
     {
         try 
         {
-            if(arr[to][from]!=edge)
+            if(arr[to][from]==0)
             {
                 arr[to][from] = edge;
                 arr[from][to] = edge;
@@ -42,11 +43,27 @@ public class Graph1 {
             System.out.println("The vertices does not exists");
         }
     }
+    
+    //LOOKUP FOR THE NEIGHBORS FOR A VERTEX
+     public int [] neighbors (int v) 
+     {
+        int count = 0;
+        for (int i=0; i<arr[v].length; i++) {
+           if (arr[v][i]>0) count++;
+        }
+        int[] neighbor= new int[count];
+         count = 0;
+        for (int i=0; i<arr[v].length; i++) {
+            if (arr[v][i]>0) 
+                neighbor[count++] = i;
+        }
+        return neighbor;
+    }
      
     public static void main(String[] args) {
         // TODO code application logic here
         
-        int v, e, count = 1, to = 0, from = 0;
+        int v, e,w, count = 1, to = 0, from = 0;
         Scanner sc = new Scanner(System.in);
         Graph1 graph;
         try 
@@ -58,13 +75,15 @@ public class Graph1 {
             
             graph = new Graph1(v);
  
-            System.out.println("Enter the edges: to then from : ");
             while (count <= e) 
             {
+                System.out.println("Enter the edges: to then from : ");
                 to = sc.nextInt();
                 from = sc.nextInt();
+                System.out.println("Enter the label for that edge: ");
+                w = sc.nextInt();
  
-                graph.addEdge(to, from, 1);
+                graph.addEdge(to, from, w);
                 count++;
             }
  
@@ -81,12 +100,18 @@ public class Graph1 {
                     System.out.print(arr[i][j] + " ");
                 System.out.println();
             }
+            System.out.println("Enter the vertex to lookup for its neighbors: ");
+            int vertex = sc.nextInt();
+            int[] getNeighbor = graph.neighbors(vertex);
+            System.out.println("Neighbors of " + vertex + " are: ");
+            for(int i:getNeighbor)
+                System.out.print(i+" ");
+            System.out.println();
         }
         catch (Exception E) 
         {
             E.printStackTrace();
-            System.out.println("Either graph is wrong or addEdge() or getEdge()!!!");
+            System.out.println("Either graph is wrong or addEdge() or getEdge()or getNeighbor()!!!");
         }
-        sc.close();
     }
 }
